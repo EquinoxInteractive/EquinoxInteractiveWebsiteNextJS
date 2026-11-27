@@ -1,0 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =====================================================
+   Equinox Interactive — Steel & Slate design system
+   Palet diambil langsung dari logo: slate gelap (#15181f–#1a1d24),
+   baja perak (#b0b3b8), abu menengah (#54575e), abu gelap (#2e3138).
+   Tanpa gradient — flat dan tegas.
+   ===================================================== */
+
+@layer base {
+  :root {
+    --background: 220 14% 93%;
+    --foreground: 222 19% 11%;
+    --card: 220 14% 97%;
+    --card-foreground: 222 19% 11%;
+    --popover: 220 14% 97%;
+    --popover-foreground: 222 19% 11%;
+    --primary: 222 12% 26%;
+    --primary-foreground: 220 14% 96%;
+    --secondary: 220 10% 86%;
+    --secondary-foreground: 222 19% 11%;
+    --muted: 220 12% 89%;
+    --muted-foreground: 222 8% 36%;
+    --accent: 220 6% 55%;
+    --accent-foreground: 222 19% 8%;
+    --border: 220 10% 78%;
+    --input: 220 10% 78%;
+    --ring: 222 12% 26%;
+    --radius: 0.25rem;
+    --steel: 222 12% 30%;
+    --steel-dark: 220 6% 55%;
+    --ascii: 222 14% 28%;
+    --grid: 222 14% 20%;
+  }
+
+  .dark {
+    --background: 222 19% 9%;
+    --foreground: 220 9% 90%;
+    --card: 222 18% 12%;
+    --card-foreground: 220 9% 90%;
+    --popover: 222 18% 12%;
+    --popover-foreground: 220 9% 90%;
+    --primary: 220 5% 71%;
+    --primary-foreground: 222 19% 9%;
+    --secondary: 222 10% 20%;
+    --secondary-foreground: 220 9% 90%;
+    --muted: 222 15% 15%;
+    --muted-foreground: 220 6% 58%;
+    --accent: 220 5% 35%;
+    --accent-foreground: 220 9% 92%;
+    --border: 222 11% 20%;
+    --input: 222 11% 20%;
+    --ring: 220 5% 71%;
+    --steel: 220 5% 71%;
+    --steel-dark: 220 5% 35%;
+    --ascii: 220 5% 71%;
+    --grid: 220 5% 71%;
+  }
+
+  * {
+    @apply border-border;
+    -webkit-tap-highlight-color: transparent;
+  }
+  html { overscroll-behavior: none; }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+  /* Grid teknis halus */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      linear-gradient(hsl(var(--grid) / 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--grid) / 0.045) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+  h1, h2, h3, h4 { @apply font-orbitron tracking-tight; }
+  ::selection { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: hsl(var(--background)); }
+  ::-webkit-scrollbar-thumb { background: hsl(var(--accent)); }
+  ::-webkit-scrollbar-thumb:hover { background: hsl(var(--primary)); }
+}
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+@layer components {
+  .mono-label {
+    @apply font-mono text-[11px] uppercase tracking-[0.28em] text-muted-foreground;
+  }
+  .section-pad { @apply relative py-24 md:py-32; }
+  .section-title {
+    @apply font-orbitron font-bold tracking-tight text-4xl sm:text-5xl md:text-6xl leading-[1.05];
+  }
+  /* Kurung sudut ala HUD */
+  .brackets { position: relative; }
+  .brackets::before, .brackets::after {
+    content: ''; position: absolute; width: 14px; height: 14px; pointer-events: none;
+    border-color: hsl(var(--primary)); transition: all .4s ease; opacity: .7;
+  }
+  .brackets::before { top: -1px; left: -1px; border-top: 1px solid; border-left: 1px solid; }
+  .brackets::after { bottom: -1px; right: -1px; border-bottom: 1px solid; border-right: 1px solid; }
+  .brackets:hover::before, .brackets:hover::after { width: 28px; height: 28px; opacity: 1; }
+
+  .scanlines::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(0deg, hsl(var(--background) / .22) 0 1px, transparent 1px 3px);
+  }
+  .nav-pill-link { @apply relative px-4 py-2 font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-foreground; }
+  .nav-pill-link[data-active='true'] { @apply text-foreground; }
+}
+
+/* View Transition (theme switch) */
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-old(root) { z-index: 1; }
+::view-transition-new(root) { z-index: 9999; }
+
+@media (max-width: 768px) {
+  ::-webkit-scrollbar { width: 4px; }
+  body::before { background-size: 44px 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none !important; }
+}
